@@ -1,6 +1,15 @@
 # -*- coding: UTF-8 -*-
+from abc import ABCMeta, abstractmethod
 
-class Soma(object):
+class Expressao(object):
+    __metaclass__ = ABCMeta
+
+    @abstractmethod
+    def avalia(self):
+        pass
+
+
+class Soma(Expressao):
     def __init__(self, expressao_esquerda, expressao_direita):
         self.__expressao_esquerda = expressao_esquerda
         self.__expressao_direita = expressao_direita
@@ -9,7 +18,7 @@ class Soma(object):
         return self.__expressao_esquerda.avalia() + self.__expressao_direita.avalia()
 
 
-class Subtracao(object):
+class Subtracao(Expressao):
     def __init__(self, expressao_esquerda, expressao_direita):
         self.__expressao_esquerda = expressao_esquerda
         self.__expressao_direita = expressao_direita
@@ -18,7 +27,7 @@ class Subtracao(object):
         return self.__expressao_esquerda.avalia() - self.__expressao_direita.avalia()
 
 
-class Numero(object):
+class Numero(Expressao):
     def __init__(self, numero):
         self.__numero = numero
 
