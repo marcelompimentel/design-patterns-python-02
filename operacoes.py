@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 from abc import ABCMeta, abstractmethod
+from impressora import Impressora
 
 class Expressao(object):
     __metaclass__ = ABCMeta
@@ -17,6 +18,17 @@ class Soma(Expressao):
     def avalia(self):
         return self.__expressao_esquerda.avalia() + self.__expressao_direita.avalia()
 
+    @property
+    def expressao_esquerda(self):
+        return self.__expressao_esquerda
+
+    @property
+    def expressao_direita(self):
+        return self.__expressao_direita
+
+    def aceita(self, visitor):
+        visitor.visita_soma(self)
+
 
 class Subtracao(Expressao):
     def __init__(self, expressao_esquerda, expressao_direita):
@@ -26,6 +38,17 @@ class Subtracao(Expressao):
     def avalia(self):
         return self.__expressao_esquerda.avalia() - self.__expressao_direita.avalia()
 
+    @property
+    def expressao_esquerda(self):
+        return self.__expressao_esquerda
+
+    @property
+    def expressao_direita(self):
+        return self.__expressao_direita
+
+    def aceita(self, visitor):
+        visitor.visita_subtracao(self)
+
 
 class Numero(Expressao):
     def __init__(self, numero):
@@ -34,9 +57,14 @@ class Numero(Expressao):
     def avalia(self):
         return self.__numero
 
+    def aceita(self, visitor):
+        visitor.visita_numero(self)
+
 
 if __name__ == '__main__':
     expressao_esquerda = Soma(Numero(25), Numero(35))
     expressao_direita = Subtracao(Numero(10), Numero(5))
     expressao_conta = Soma(expressao_esquerda, expressao_direita)
-    print(expressao_conta.avalia())
+
+    impressora = Impressora()
+    expressao_conta.aceita(impressora)
